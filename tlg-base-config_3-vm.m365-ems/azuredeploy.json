@@ -111,7 +111,7 @@
       "clientNicIP": "10.0.0.12",
       "cliPublicIpName": "[concat(parameters('configName'),'-CLI_IP')]",
 
-      "clientOS": "[if(equals(parameters('clientOS'),'Windows Server 2016'),'2016-Datacenter','rs4-pro')]",
+      "clientOS": "[if(equals(parameters('clientOS'),'Windows Server 2016'),'2016-Datacenter','20h2-pro')]",
       "serverOS": "[if(equals(parameters('serverOS'),'Windows Server 2016'),'2016-Datacenter','2012-R2-Datacenter')]"
     },
 
