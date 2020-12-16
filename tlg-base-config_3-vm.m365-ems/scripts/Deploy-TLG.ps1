@@ -12,8 +12,15 @@
 
 #>
 
+<#
+  Chris Hunt 16/12/2020
+
+  Amended the script to use the latest Azure Az PowerShell Module instead of the older AzureRM Module.
+
+#>
+
 # Provide parameter values
-$subscription = "subscription name"
+$subscription = "Subscription Name"
 $resourceGroup = "resource group name"
 $location = "location, i.e. West US"
 
@@ -23,9 +30,10 @@ $serverOS = "Windows Server 2016" # The OS of server VMs in your deployment, i.e
 $clientOS = "Windows Server 2016" # The OS of client VMs in your deployment, i.e. Windows Server 2016 or Windows 10.
 $adminUserName = "" # The name of the domain administrator account to create, i.e. globaladmin.
 $adminPassword = "" # The administrator account password.
-$vmSize = "Standard_DS2_v2" # Select a VM size for all server VMs in your deployment.
+$vmSize = "D2_v3" # Select a VM size for all server VMs in your deployment.
 $dnsLabelPrefix = "" # DNS label prefix for public IPs. Must be lowercase and match the regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
-$_artifactsLocation = "https://raw.githubusercontent.com/oualabadmins/lab_deploy/master/tlg-base-config_3-vm.m365-ems" # Location of template artifacts.
+# $_artifactsLocation = "https://raw.githubusercontent.com/oualabadmins/lab_deploy/master/tlg-base-config_3-vm.m365-ems" # Location of template artifacts.
+$_artifactsLocation = "https://raw.githubusercontent.com/GrumpyGit81/TLG/master/tlg-base-config_3-vm.m365-ems" # Location of template artifacts.
 $_artifactsLocationSasToken = "" # Enter SAS token here if needed.
 $templateUri = "$_artifactsLocation/azuredeploy.json"
 
@@ -43,12 +51,15 @@ $parameters.Add("_artifactsLocation",$_artifactsLocation)
 $parameters.Add("_artifactsLocationSasToken",$_artifactsLocationSasToken)
 
 # Log in to Azure subscription
-Connect-AzureRmAccount
-Select-AzureRmSubscription -SubscriptionName $subscription
+Connect-AzAccount
+Set-AzContext -subscription $subscription
 
 # Deploy resource group
-New-AzureRmResourceGroup -Name $resourceGroup -Location $location
+New-AzResourceGroup -Name $resourceGroup -Location $location
 
 # Deploy template
-New-AzureRmResourceGroupDeployment -Name $configName -ResourceGroupName $resourceGroup `
-  -TemplateUri $templateUri -TemplateParameterObject $parameters -DeploymentDebugLogLevel All
+New-AzResourceGroupDeployment -Name $configName `
+-ResourceGroupName $resourceGroup `
+-TemplateUri $templateUri `
+-TemplateParameterObject $parameters `
+-DeploymentDebugLogLevel All

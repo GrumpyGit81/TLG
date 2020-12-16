@@ -46,13 +46,19 @@
             "version": "latest"
           },
           "osDisk": {
-            "createOption": "FromImage"
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Standard_LRS"
+            }
           },
           "dataDisks": [
             {
               "createOption": "Empty",
-              "diskSizeGB": 1023,
-              "lun": 0
+              "diskSizeGB": 256,
+              "lun": 0,
+              "managedDisk": {
+                "storageAccountType": "Standard_LRS"
+              }
             }
           ]
         },
